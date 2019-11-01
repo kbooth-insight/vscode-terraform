@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CompletionProvider } from './autocompletion/completion-provider';
 import { CodeLensProvider } from './codelense';
 import { IndexCommand } from './commands';
+import { TestCommand } from './commands/test';
 import { Command } from './commands/command';
 import { LintCommand } from './commands/lint';
 import { NavigateToSectionCommand } from './commands/navigatetosection';
@@ -84,7 +85,8 @@ export async function activate(ctx: vscode.ExtensionContext) {
             new ShowReferencesCommand(indexAdapter, ctx),
             new NavigateToSectionCommand(indexAdapter, ctx),
             new PreviewGraphCommand(indexAdapter, runner, ctx),
-            new ReindexCommand(indexAdapter, watcher, ctx));
+            new ReindexCommand(indexAdapter, watcher, ctx),
+            new TestCommand(runner, indexAdapter, ctx));
         // providers
         vscode.languages.registerCompletionItemProvider(documentSelector, new CompletionProvider(indexAdapter), '.', '"', '{', '(', '['),
             vscode.languages.registerDefinitionProvider(documentSelector, new DefinitionProvider(indexAdapter)),
@@ -117,7 +119,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
         Command.dynamicRegister(NavigateToSectionCommand.CommandName, IndexerNotEnabledCommandHandler);
         Command.dynamicRegister(PreviewGraphCommand.CommandName, IndexerNotEnabledCommandHandler);
         Command.dynamicRegister(ReindexCommand.CommandName, IndexerNotEnabledCommandHandler);
-
+        Command.dynamicRegister(TestCommand.CommandName, IndexerNotEnabledCommandHandler);
     }
 
     const elapsed = process.hrtime(start);

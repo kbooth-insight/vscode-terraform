@@ -24,6 +24,7 @@
     "onCommand:terraform.validate",
     "onCommand:terraform.lint",
     "onCommand:terraform.preview-graph",
+    "onCommand:terraform.test-command",
     "onView:terraform-modules",
     "workspaceContains:**/*.tf"
   ],
@@ -125,8 +126,8 @@
         "title": "Terraform: Preview Graph"
       },
       {
-        "command": "terraform.show-plan",
-        "title": "Terraform: Show Plan"
+        "command": "terraform.test-command",
+        "title": "Terraform: Run some custom deal"
       }
     ],
     "grammars": [
@@ -250,7 +251,7 @@
                 "null"
               ],
               "description": "The path to an existing binary for the Language Server. This allows users to run custom builds rather than download pre-build releases",
-              "default": null
+              "default": "null"
             }
           },
           "default": {
@@ -268,6 +269,18 @@
           "type": "boolean",
           "default": true,
           "description": "Enable/disable telemetry reporting for this plugin. The global `telemetry.enableTelemetry` is also respected. If the global is disabled, this setting has no effect."
+        },
+        "terraform.enterprise.enterpriseHost": {
+          "type": "string",
+          "default": "test",
+          "description": "TFE or TFCh host",
+          "scope": "application"
+        },
+        "terraform.enterprise.userToken": {
+          "type": "string",
+          "default": "",
+          "description": "TFC user token",
+          "scope": "application"
         }
       }
     }

@@ -27,6 +27,19 @@ export interface TerraformExecutableConfiguration {
   version?: string;
 }
 
+export interface TerraformEnterpriseUserTokenConfiguration {
+  userToken: string;
+}
+
+export interface TerraformEnterpriseHostConfiguration {
+   enterpriseHost: string;
+}
+
+// export interface TerraformTestConfiguration {
+//   filedOne: string;
+//   fieldTwo: string;
+// }
+
 export interface TerraformConfiguration {
   path: string;
   paths: (string | TerraformExecutableConfiguration)[];
@@ -38,6 +51,9 @@ export interface TerraformConfiguration {
   codelens: TerraformCodeLensConfiguration;
   telemetry: TerraformTelemetryConfiguration;
   format: TerraformFormatConfiguration;
+  enterpriseUserToken: TerraformEnterpriseUserTokenConfiguration;
+  enterpriseHost: TerraformEnterpriseHostConfiguration;
+  //test: TerraformTestConfiguration;
 }
 
 export interface TerraformFormatConfiguration {
@@ -46,6 +62,8 @@ export interface TerraformFormatConfiguration {
 
 export function getConfiguration(): TerraformConfiguration {
   let raw = vscode.workspace.getConfiguration("terraform");
+
+  let userToken = raw.enterprise.userToken;
 
   // needed for conversion
   let convertible = {
@@ -59,6 +77,8 @@ export function getConfiguration(): TerraformConfiguration {
     codelens: raw.codelens,
     telemetry: raw.telemetry,
     format: raw.format,
+    enterpriseUserToken: raw.enterprise.userToken,
+    //enterpriseHost: raw.enterprise.host
   };
 
   return <TerraformConfiguration>convertible;
