@@ -136,7 +136,7 @@ export let Reporter: TelemetryReporter;
 export function activate(ctx: vscode.ExtensionContext) {
   const packageJson = require(ctx.asAbsolutePath('./package.json'));
 
-  const aiKey = require('./constants.json').APPINSIGHTS_KEY;
+  const aiKey = "" //require('./constants.json').APPINSIGHTS_KEY;
 
   Reporter = new TelemetryReporter(`${packageJson.publisher}.${packageJson.name}`, packageJson.version, aiKey);
 }
