@@ -60,6 +60,10 @@
         {
           "id": "terraform-modules",
           "name": "Modules"
+        },
+        {
+          "id": "test-view",
+          "name": "TFE Explorer"
         }
       ]
     },

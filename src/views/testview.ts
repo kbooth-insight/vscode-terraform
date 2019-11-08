@@ -3,14 +3,14 @@ import * as vscode from 'vscode';
 export class TestView {
 
 	constructor(context: vscode.ExtensionContext) {
-		const view = vscode.window.createTreeView('testView', { treeDataProvider: aNodeWithIdTreeDataProvider(), showCollapseAll: true });
-		vscode.commands.registerCommand('testView.reveal', async () => {
+		const view = vscode.window.createTreeView('test-view', { treeDataProvider: aNodeWithIdTreeDataProvider(), showCollapseAll: true });
+		vscode.commands.registerCommand('test-view.reveal', async () => {
 			const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the item to reveal' });
 			if (key) {
 				await view.reveal({ key }, { focus: true, select: false, expand: true });
 			}
 		});
-		vscode.commands.registerCommand('testView.changeTitle', async () => {
+		vscode.commands.registerCommand('test-view.changeTitle', async () => {
 			const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Test View', placeHolder: view.message });
 			if (title) {
 				//view.title = title;
@@ -115,9 +115,13 @@ export class EnterpriseItem extends vscode.TreeItem {
 		return `${this.label}-${this.id}`;
 	}
 
-	get id(): string {
-		return this.id;
-	}
+	// get id(): string {
+	// 	return this.id;
+	// }
+
+	// set id(id: string) {
+	// 	this.id = id;
+	// }
 
 	// iconPath = {
 	// 	light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
