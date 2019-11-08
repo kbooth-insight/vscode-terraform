@@ -100,7 +100,8 @@ export async function activate(ctx: vscode.ExtensionContext) {
             vscode.languages.registerFoldingRangeProvider(documentSelector, new CodeFoldingProvider(indexAdapter));
         // views
         vscode.window.registerTreeDataProvider('terraform-modules', new ModuleOverview(indexAdapter));
-       new TestView(ctx);
+       //
+         new TestView(ctx);
         if (getConfiguration().codelens.enabled) {
             ctx.subscriptions.push(vscode.languages.registerCodeLensProvider(documentSelector, new CodeLensProvider(indexAdapter)));
         }
