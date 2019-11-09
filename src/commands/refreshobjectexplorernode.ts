@@ -3,11 +3,12 @@ import { IndexAdapter } from "../index/index-adapter";
 import { Command, CommandType } from "./command";
 import { Runner } from "../runner";
 
-export class TestCommand extends Command {
-  public static readonly CommandName = "test-command";
+
+export class RefreshObjectExplorerNode extends Command {
+  public static readonly CommandName = "refreshObjectExplorerNode";
 
   constructor(private runner: Runner, private index: IndexAdapter, ctx: vscode.ExtensionContext) {
-    super(TestCommand.CommandName, ctx, CommandType.PALETTE);
+    super(RefreshObjectExplorerNode.CommandName, ctx, CommandType.PALETTE);
   }
 
   protected async perform(...args: any[]): Promise<any> { 

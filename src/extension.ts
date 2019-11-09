@@ -32,9 +32,10 @@ import { ToggleLanguageServerCommand } from './commands/toggleLanguageServer';
 import { InstallLanguageServerCommand } from './commands/installLanguageServer';
 import * as cp from 'child_process';
 import { TestView } from './views/testview';
+import { RefreshObjectExplorerNode } from './commands/refreshobjectexplorernode'
 
 export let outputChannel = vscode.window.createOutputChannel("Terraform");
-const logger = new logging.Logger("extension");
+const logger = new logging.Logger("terraform");
 
 const documentSelector: vscode.DocumentSelector = [
     { language: "terraform", scheme: "file" },
@@ -87,7 +88,8 @@ export async function activate(ctx: vscode.ExtensionContext) {
             new NavigateToSectionCommand(indexAdapter, ctx),
             new PreviewGraphCommand(indexAdapter, runner, ctx),
             new ReindexCommand(indexAdapter, watcher, ctx),
-            new TestCommand(runner, indexAdapter, ctx));
+            new TestCommand(runner, indexAdapter, ctx),
+            new RefreshObjectExplorerNode(runner, indexAdapter, ctx));
         // providers
         vscode.languages.registerCompletionItemProvider(documentSelector, new CompletionProvider(indexAdapter), '.', '"', '{', '(', '['),
             vscode.languages.registerDefinitionProvider(documentSelector, new DefinitionProvider(indexAdapter)),
@@ -100,8 +102,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
             vscode.languages.registerFoldingRangeProvider(documentSelector, new CodeFoldingProvider(indexAdapter));
         // views
         vscode.window.registerTreeDataProvider('terraform-modules', new ModuleOverview(indexAdapter));
-       //
-         new TestView(ctx);
+        new TestView(ctx);
         if (getConfiguration().codelens.enabled) {
             ctx.subscriptions.push(vscode.languages.registerCodeLensProvider(documentSelector, new CodeLensProvider(indexAdapter)));
         }
@@ -123,6 +124,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
         Command.dynamicRegister(PreviewGraphCommand.CommandName, IndexerNotEnabledCommandHandler);
         Command.dynamicRegister(ReindexCommand.CommandName, IndexerNotEnabledCommandHandler);
         Command.dynamicRegister(TestCommand.CommandName, IndexerNotEnabledCommandHandler);
+        Command.dynamicRegister(RefreshObjectExplorerNode.CommandName, IndexerNotEnabledCommandHandler)
     }
 
     const elapsed = process.hrtime(start);

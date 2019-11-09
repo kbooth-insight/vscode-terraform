@@ -28,7 +28,7 @@ export interface TerraformExecutableConfiguration {
 }
 
 export interface TerraformEnterpriseUserTokenConfiguration {
-  userToken: string;
+  enterpriseUserToken: string;
 }
 
 export interface TerraformEnterpriseHostConfiguration {
@@ -51,8 +51,8 @@ export interface TerraformConfiguration {
   codelens: TerraformCodeLensConfiguration;
   telemetry: TerraformTelemetryConfiguration;
   format: TerraformFormatConfiguration;
-  enterpriseUserToken: TerraformEnterpriseUserTokenConfiguration;
-  enterpriseHost: TerraformEnterpriseHostConfiguration;
+  enterpriseUserToken: string;
+  enterpriseHost: string;
   //test: TerraformTestConfiguration;
 }
 
@@ -77,7 +77,7 @@ export function getConfiguration(): TerraformConfiguration {
     codelens: raw.codelens,
     telemetry: raw.telemetry,
     format: raw.format,
-    enterpriseUserToken: raw.enterprise.userToken,
+    enterpriseUserToken: raw.enterprise.enterpriseUserToken,
     //enterpriseHost: raw.enterprise.host
   };
 

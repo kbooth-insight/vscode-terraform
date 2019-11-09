@@ -153,6 +153,9 @@ export class Runner extends vscode.Disposable {
 
   private configuredExecutables(): TerraformExecutableConfiguration[] {
     const cfg = getConfiguration();
+    if(!cfg.paths) {
+      return null;
+    }
     const paths = cfg.paths.map(p => {
       if (typeof p === "string")
         return { path: p };
