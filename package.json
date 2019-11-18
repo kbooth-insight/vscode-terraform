@@ -26,6 +26,7 @@
     "onCommand:terraform.preview-graph",
     "onCommand:terraform.test-command",
     "onView:terraform-modules",
+    "onView:test-view",
     "workspaceContains:**/*.tf"
   ],
   "main": "./out/src/extension",
@@ -132,6 +133,10 @@
       {
         "command": "terraform.test-command",
         "title": "Terraform: Run some custom deal"
+      },
+      {
+        "command": "terraform.refreshObjectExplorerNode",
+        "title": "Refresh something"
       }
     ],
     "grammars": [
@@ -277,14 +282,12 @@
         "terraform.enterprise.enterpriseHost": {
           "type": "string",
           "default": "test",
-          "description": "TFE or TFCh host",
-          "scope": "application"
+          "description": "TFE or TFCh host"
         },
-        "terraform.enterprise.userToken": {
+        "terraform.enterprise.enterpriseUserToken": {
           "type": "string",
           "default": "",
-          "description": "TFC user token",
-          "scope": "application"
+          "description": "TFC user token"
         }
       }
     }

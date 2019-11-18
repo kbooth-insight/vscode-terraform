@@ -1,4 +1,13 @@
 import * as vscode from 'vscode';
+import * as restm from "typed-rest-client/RestClient"
+import * as hm from "typed-rest-client/Handlers"
+
+export interface HttpBinData {
+	url: string;
+	data: any;
+	json: any;
+	args?: any
+  }
 
 export class TestView {
 
@@ -10,12 +19,17 @@ export class TestView {
 				await view.reveal({ key }, { focus: true, select: false, expand: true });
 			}
 		});
+
 		vscode.commands.registerCommand('test-view.changeTitle', async () => {
 			const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Test View', placeHolder: view.message });
 			if (title) {
 				//view.title = title;
 			}
 		});
+
+		vscode.commands.registerCommand('extension.refreshObjectExplorerNode', async () => {
+			vscode.window.showInformationMessage('refresh called');
+		})
 	}
 }
 
@@ -42,6 +56,14 @@ const tree = {
 let nodes = {};
 
 function aNodeWithIdTreeDataProvider(): vscode.TreeDataProvider<{ key: string }> {
+
+	let userToken = vscode.workspace.getConfiguration().terraform.enterprise.enterpriseUserToken;
+	var authHandler = new hm.BearerCredentialHandler(userToken);
+
+	let client = new restm.RestClient('test-client', 'https://app.terraform.io/api/v2', [authHandler]);
+	//let response: restm.IRestResponse<HttpBinData> = client.get<HttpBinData>('organizations/kbooth/workspaces').;
+	//this.logger.info(response.result.data);
+
 	return {
 		getChildren: (element: { key: string }): { key: string }[] => {
 			return getChildren(element ? element.key : undefined).map(key => getNode(key));
