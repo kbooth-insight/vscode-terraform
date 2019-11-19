@@ -31,7 +31,7 @@ import { ExperimentalLanguageClient } from './languageclient';
 import { ToggleLanguageServerCommand } from './commands/toggleLanguageServer';
 import { InstallLanguageServerCommand } from './commands/installLanguageServer';
 import * as cp from 'child_process';
-import { TestView } from './views/testview';
+import { TfeTreeView } from './views/TfeTreeView';
 import { RefreshObjectExplorerNode } from './commands/refreshobjectexplorernode'
 
 export let outputChannel = vscode.window.createOutputChannel("Terraform");
@@ -88,7 +88,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
             new NavigateToSectionCommand(indexAdapter, ctx),
             new PreviewGraphCommand(indexAdapter, runner, ctx),
             new ReindexCommand(indexAdapter, watcher, ctx),
-            new TestCommand(runner, indexAdapter, ctx),
+            new TestCommand(runner, ctx),
             new RefreshObjectExplorerNode(runner, indexAdapter, ctx));
         // providers
         vscode.languages.registerCompletionItemProvider(documentSelector, new CompletionProvider(indexAdapter), '.', '"', '{', '(', '['),
@@ -102,7 +102,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
             vscode.languages.registerFoldingRangeProvider(documentSelector, new CodeFoldingProvider(indexAdapter));
         // views
         vscode.window.registerTreeDataProvider('terraform-modules', new ModuleOverview(indexAdapter));
-        new TestView(ctx);
+        new TfeTreeView(ctx);
         if (getConfiguration().codelens.enabled) {
             ctx.subscriptions.push(vscode.languages.registerCodeLensProvider(documentSelector, new CodeLensProvider(indexAdapter)));
         }
