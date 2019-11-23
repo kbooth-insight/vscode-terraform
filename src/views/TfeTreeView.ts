@@ -10,7 +10,7 @@ export interface HttpBinData {
 	args?: any
 }
 
-export class TestView {
+export class TfeTreeView {
 
 	private testView: vscode.TreeView<{ key: string }>;
 
@@ -153,19 +153,6 @@ export class EnterpriseItem extends vscode.TreeItem {
 	get tooltip(): string {
 		return `${this.label}-${this.id}`;
 	}
-
-	// get id(): string {
-	// 	return this.id;
-	// }
-
-	// set id(id: string) {
-	// 	this.id = id;
-	// }
-
-	// iconPath = {
-	// 	light: path.join(__filename, '..', '..', 'resources', 'light', 'dependency.svg'),
-	// 	dark: path.join(__filename, '..', '..', 'resources', 'dark', 'dependency.svg')
-	// };
 
 	contextValue = 'dependency';
 

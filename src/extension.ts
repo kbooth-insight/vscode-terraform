@@ -31,7 +31,7 @@ import { ExperimentalLanguageClient } from './languageclient';
 import { ToggleLanguageServerCommand } from './commands/toggleLanguageServer';
 import { InstallLanguageServerCommand } from './commands/installLanguageServer';
 import * as cp from 'child_process';
-import { TestView } from './views/testview';
+import { TfeTreeView } from './views/TfeTreeView';
 import { RefreshObjectExplorerNode } from './commands/refreshobjectexplorernode'
 import { TfeView } from './views/tfe-view';
 
@@ -89,7 +89,7 @@ export async function activate(ctx: vscode.ExtensionContext) {
             new NavigateToSectionCommand(indexAdapter, ctx),
             new PreviewGraphCommand(indexAdapter, runner, ctx),
             new ReindexCommand(indexAdapter, watcher, ctx),
-            new TestCommand(runner, indexAdapter, ctx),
+            new TestCommand(runner, ctx),
             new RefreshObjectExplorerNode(runner, indexAdapter, ctx));
         // providers
         vscode.languages.registerCompletionItemProvider(documentSelector, new CompletionProvider(indexAdapter), '.', '"', '{', '(', '['),
