@@ -33,6 +33,7 @@ import { InstallLanguageServerCommand } from './commands/installLanguageServer';
 import * as cp from 'child_process';
 import { TestView } from './views/testview';
 import { RefreshObjectExplorerNode } from './commands/refreshobjectexplorernode'
+import { TfeView } from './views/tfe-view';
 
 export let outputChannel = vscode.window.createOutputChannel("Terraform");
 const logger = new logging.Logger("terraform");
@@ -102,7 +103,9 @@ export async function activate(ctx: vscode.ExtensionContext) {
             vscode.languages.registerFoldingRangeProvider(documentSelector, new CodeFoldingProvider(indexAdapter));
         // views
         vscode.window.registerTreeDataProvider('terraform-modules', new ModuleOverview(indexAdapter));
-        new TestView(ctx);
+        vscode.window.registerTreeDataProvider('tfe-view', new TfeView(ctx));
+        
+        //new TestView(ctx);
         if (getConfiguration().codelens.enabled) {
             ctx.subscriptions.push(vscode.languages.registerCodeLensProvider(documentSelector, new CodeLensProvider(indexAdapter)));
         }

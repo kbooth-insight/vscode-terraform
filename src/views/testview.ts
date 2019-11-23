@@ -1,27 +1,31 @@
 import * as vscode from 'vscode';
 import * as restm from "typed-rest-client/RestClient"
 import * as hm from "typed-rest-client/Handlers"
+import logger = require('fancy-log');
 
 export interface HttpBinData {
 	url: string;
 	data: any;
 	json: any;
 	args?: any
-  }
+}
 
 export class TestView {
 
+	private testView: vscode.TreeView<{ key: string }>;
+
 	constructor(context: vscode.ExtensionContext) {
-		const view = vscode.window.createTreeView('test-view', { treeDataProvider: aNodeWithIdTreeDataProvider(), showCollapseAll: true });
+		
+		this.testView = vscode.window.createTreeView('test-view', { treeDataProvider: aNodeWithIdTreeDataProvider(), showCollapseAll: true });
 		vscode.commands.registerCommand('test-view.reveal', async () => {
 			const key = await vscode.window.showInputBox({ placeHolder: 'Type the label of the item to reveal' });
 			if (key) {
-				await view.reveal({ key }, { focus: true, select: false, expand: true });
+				await this.testView.reveal({ key }, { focus: true, select: false, expand: true });
 			}
 		});
 
 		vscode.commands.registerCommand('test-view.changeTitle', async () => {
-			const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Test View', placeHolder: view.message });
+			const title = await vscode.window.showInputBox({ prompt: 'Type the new title for the Test View', placeHolder: this.testView.message });
 			if (title) {
 				//view.title = title;
 			}
@@ -30,6 +34,12 @@ export class TestView {
 		vscode.commands.registerCommand('extension.refreshObjectExplorerNode', async () => {
 			vscode.window.showInformationMessage('refresh called');
 		})
+
+		this.testView.onDidChangeVisibility(async (e) => {
+			console.log('test');
+			
+
+		});
 	}
 }
 
@@ -57,18 +67,25 @@ let nodes = {};
 
 function aNodeWithIdTreeDataProvider(): vscode.TreeDataProvider<{ key: string }> {
 
-	let userToken = vscode.workspace.getConfiguration().terraform.enterprise.enterpriseUserToken;
-	var authHandler = new hm.BearerCredentialHandler(userToken);
-
-	let client = new restm.RestClient('test-client', 'https://app.terraform.io/api/v2', [authHandler]);
-	//let response: restm.IRestResponse<HttpBinData> = client.get<HttpBinData>('organizations/kbooth/workspaces').;
-	//this.logger.info(response.result.data);
-
 	return {
 		getChildren: (element: { key: string }): { key: string }[] => {
 			return getChildren(element ? element.key : undefined).map(key => getNode(key));
 		},
 		getTreeItem: (element: { key: string }): vscode.TreeItem => {
+
+			let userToken = vscode.workspace.getConfiguration().terraform.enterprise.enterpriseUserToken;
+			var authHandler = new hm.BearerCredentialHandler(userToken);
+
+			let client = new restm.RestClient('test-client', 'https://app.terraform.io/api/v2', [authHandler]);
+			let response = client.get<HttpBinData>('organizations/kbooth/workspaces');
+			let r = Promise.resolve(response);
+			response.then((r) => {
+				logger.info(r.result.data);
+				console.info(r.result.data);
+
+			});
+
+			//this.logger.info(r.result.data);
 			const treeItem = getTreeItem(element.key);
 			treeItem.id = element.key;
 			return treeItem;

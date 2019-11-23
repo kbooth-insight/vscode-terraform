@@ -63,7 +63,7 @@
           "name": "Modules"
         },
         {
-          "id": "test-view",
+          "id": "tfe-view",
           "name": "TFE Explorer"
         }
       ]
@@ -93,6 +93,10 @@
       {
         "command": "terraform.validate",
         "title": "Terraform: Validate"
+      },
+      {
+        "command": "tfe-view.viewData",
+        "title": "View JSON"
       },
       {
         "command": "terraform.lint",
@@ -139,6 +143,14 @@
         "title": "Refresh something"
       }
     ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "tfe-view.viewData",
+          "when": "view == tfe-view"
+        }
+      ]
+    },
     "grammars": [
       {
         "language": "terraform",
