@@ -31,7 +31,6 @@ import { ExperimentalLanguageClient } from './languageclient';
 import { ToggleLanguageServerCommand } from './commands/toggleLanguageServer';
 import { InstallLanguageServerCommand } from './commands/installLanguageServer';
 import * as cp from 'child_process';
-import { TfeTreeView } from './views/TfeTreeView';
 import { RefreshObjectExplorerNode } from './commands/refreshobjectexplorernode'
 import { TfeView } from './views/tfe-view';
 

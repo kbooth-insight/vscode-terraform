@@ -25,11 +25,13 @@ export interface HttpBinData {
 
 export class TfeItem extends vscode.TreeItem {
     private data: string;
+    private type: string;
 
-	constructor(label: string, state: vscode.TreeItemCollapsibleState, id: string, data: string) {
+	constructor(label: string, state: vscode.TreeItemCollapsibleState, id: string, data: string, type: string) {
         super(label, state);
         this.id = id;
         this.data = data;
+        this.type = type;
     }
 
     public get_data() :string { 
@@ -75,12 +77,14 @@ export class TfeView implements vscode.TreeDataProvider<TfeItem> {
             response.result.data.forEach(item => {
                 let label: string = `${item.id} - ${item.attributes.status}`
                 let data: string = JSON.stringify(item);
-                let tfeItem : TfeItem = new TfeItem(label, vscode.TreeItemCollapsibleState.Collapsed, item.id, data);
+                let type = "RUN";
+                let tfeItem : TfeItem = new TfeItem(label, vscode.TreeItemCollapsibleState.Collapsed, item.id, data, type);
+
                 items.push(tfeItem);
             });
 
             if(items.length == 0) {
-                items.push(new TfeItem('no runs yet', vscode.TreeItemCollapsibleState.None, 'none', null));
+                items.push(new TfeItem('no runs yet', vscode.TreeItemCollapsibleState.None, 'none', null, "RUN"));
             }
 
         }
@@ -89,7 +93,7 @@ export class TfeView implements vscode.TreeDataProvider<TfeItem> {
 
             response.result.data.forEach(item => {
                 let data : string = JSON.stringify(item);
-                let tfeItem : TfeItem = new TfeItem(item.attributes.name, vscode.TreeItemCollapsibleState.Collapsed, item.id, data);
+                let tfeItem : TfeItem = new TfeItem(item.attributes.name, vscode.TreeItemCollapsibleState.Collapsed, item.id, data, "WORKSPACE");
                 items.push(tfeItem);
             });
         }
