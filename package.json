@@ -99,6 +99,10 @@
         "title": "View JSON"
       },
       {
+        "command": "tfe-view.exportMocks",
+        "title": "Export Mocks"
+      },
+      {
         "command": "terraform.lint",
         "title": "Terraform: Lint"
       },
@@ -147,7 +151,11 @@
       "view/item/context": [
         {
           "command": "tfe-view.viewData",
-          "when": "view == tfe-view"
+          "when": "view == tfe-view "
+        },
+        {
+          "command": "tfe-view.exportMocks",
+          "when": "view == tfe-view && viewItem == 'RUN' "
         }
       ]
     },

@@ -6,6 +6,7 @@ import { IRestResponse } from 'typed-rest-client/RestClient';
 import { TextDocument } from 'vscode-languageclient';
 
 
+
 export class TfeDocumentProvider implements vscode.TextDocumentContentProvider {
     onDidChange?: vscode.Event<vscode.Uri>;    
     provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<string> {
@@ -26,16 +27,22 @@ export interface HttpBinData {
 export class TfeItem extends vscode.TreeItem {
     private data: string;
     private type: string;
+    public contextValue: string;
 
 	constructor(label: string, state: vscode.TreeItemCollapsibleState, id: string, data: string, type: string) {
         super(label, state);
         this.id = id;
         this.data = data;
         this.type = type;
+        this.contextValue = type;
     }
 
     public get_data() :string { 
         return this.data;
+    }
+
+    public get_type(): string {
+        return this.type;
     }
 
 }
@@ -45,7 +52,6 @@ export class TfeView implements vscode.TreeDataProvider<TfeItem> {
 
     constructor(context: vscode.ExtensionContext) {
         context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(this.documentScheme, new TfeDocumentProvider()));
-
         
         context.subscriptions.push(vscode.commands.registerCommand('tfe-view.viewData', async(item) => {
             //let doc : TextDocument = new TextDocument()
@@ -53,6 +59,10 @@ export class TfeView implements vscode.TreeDataProvider<TfeItem> {
             let doc = await vscode.workspace.openTextDocument({content: item.get_data(), language: "json"} );
             await vscode.window.showTextDocument(doc, {preview: false});
             await vscode.commands.executeCommand('editor.action.formatDocument');
+        }));
+
+        context.subscriptions.push(vscode.commands.registerCommand('tfe-view.exportMocks', async(item) => {
+            vscode.window.showInformationMessage('export mock');
         }));
     }
 
